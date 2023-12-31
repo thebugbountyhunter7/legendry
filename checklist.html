@@ -38,35 +38,33 @@
       background-color: #45a049;
     }
 
-    #threat-intel-links, #analysis-report, #user-details {
+    #analysis-report {
       margin-top: 20px;
       padding: 10px;
       border: 1px solid #ddd;
       border-radius: 4px;
-      opacity: 0;
-      animation: fadeIn 0.5s ease-in-out;
-      animation-fill-mode: forwards;
-      animation-delay: 0.5s;
     }
 
-    #threat-intel-links, #analysis-report {
-      display: none;
+    #analysis-report p {
+      margin-bottom: 10px;
     }
 
-    #user-found-label {
-      float: left;
-      margin-top: 5px;
+    #analysis-report ul {
+      list-style-type: none;
+      padding: 0;
     }
 
-    #user-found {
-      vertical-align: middle;
-      margin-left: 5px;
-      height: 15px;
-      width: 15px;
+    #analysis-report ul li {
+      display: inline-block;
+      margin-right: 10px;
     }
 
     #user-details {
       display: none;
+    }
+
+    #user-found-label {
+      float: right;
     }
 
     @keyframes fadeIn {
@@ -77,6 +75,10 @@
         opacity: 1;
       }
     }
+
+    .fadeIn {
+      animation: fadeIn 0.5s ease-in-out;
+    }
   </style>
 </head>
 <body>
@@ -85,9 +87,9 @@
   <label for="ip">Enter IP Address:</label>
   <input type="text" id="ip">
 
-  <button onclick="generateThreatIntelLinks()">Generate Threat Intelligence Links</button>
+  <button onclick="generateThreatIntelLinks()" class="fadeIn">Generate Threat Intelligence Links</button>
 
-  <div id="threat-intel-links"></div>
+  <div id="threat-intel-links" class="fadeIn"></div>
 
   <label for="traffic">Amount of Traffic in Past 60 Days:</label>
   <input type="text" id="traffic">
@@ -98,7 +100,7 @@
   <label for="domain">Domain of IP:</label>
   <input type="text" id="domain">
 
-  <label id="user-found-label" for="user-found">Any Users Associated?</label>
+  <label id="user-found-label" for="user-found">User Found:</label>
   <input type="checkbox" id="user-found" onchange="toggleUserDetails()">
 
   <div id="user-details">
@@ -112,10 +114,10 @@
   <label for="additional-info">Additional Information:</label>
   <textarea id="additional-info" rows="4" cols="50"></textarea>
 
-  <button onclick="generateReport()">Generate Report</button>
+  <button onclick="generateReport()" class="fadeIn">Generate Report</button>
 
-  <h2>Analysis Report</h2>
-  <div id="analysis-report"></div>
+  <h2 class="fadeIn">Analysis Report</h2>
+  <div id="analysis-report" class="fadeIn"></div>
 
   <script>
     function toggleUserDetails() {
@@ -146,8 +148,6 @@
           <li>AbusedIP: <a href="${Abusedip}" target="_blank">${Abusedip}</a></li>
         </ul>
       `;
-
-      linksDiv.style.display = 'block';
     }
 
     function generateReport() {
@@ -162,8 +162,8 @@
 
       var analysisReport = `
         <p>The location of IP ${ip} was found to be: ${location}</p>
-        <p>Amount of traffic in the past 60 days from IP ${ip}: ${traffic}</p>
-        <p>The domain of IP ${ip}: ${domain}</p>
+        <p>The domain of IP ${ip} was found to be: ${domain}</p>
+        <p>Amount of traffic from IP ${ip} in the past 60 days: ${traffic}</p>
       `;
 
       if (userFound) {
