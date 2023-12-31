@@ -73,16 +73,26 @@
         // Parse the JSON
         var jsonData = JSON.parse(rawJson);
 
+        // Filter out non-string values
+        function filterStrings(obj) {
+          return Object.keys(obj)
+            .filter(key => typeof obj[key] === 'string')
+            .reduce((acc, key) => {
+              acc[key] = obj[key];
+              return acc;
+            }, {});
+        }
+
         // Extract specific fields
-        var extractedData = {
-          ComputerName: jsonData.ComputerName || '',
-          FileName: jsonData.FileName || '',
-          FilePath: jsonData.FilePath || '',
-          SHA256String: jsonData.SHA256String || '',
-          SHA1String: jsonData.SHA1String || '',
-          UserName: jsonData.UserName || '',
-          IP: jsonData.IP || ''
-        };
+        var extractedData = filterStrings({
+          ComputerName: jsonData.ComputerName,
+          FileName: jsonData.FileName,
+          FilePath: jsonData.FilePath,
+          SHA256String: jsonData.SHA256String,
+          SHA1String: jsonData.SHA1String,
+          UserName: jsonData.UserName,
+          IP: jsonData.IP
+        });
 
         // Display the extracted data
         document.getElementById('extracted-data').textContent = JSON.stringify(extractedData, null, 2);
