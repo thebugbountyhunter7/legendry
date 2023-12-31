@@ -68,14 +68,30 @@
     function sortData() {
       var rawData = document.getElementById('raw-data').value;
 
-      // Regular expression to match and remove unwanted characters
-      var cleanData = rawData.replace(/[{()}[\]]/g, '');
+      try {
+        // Parse the JSON-like input
+        var jsonData = JSON.parse(rawData);
 
-      // Regular expression to extract required information
-      var sortedData = cleanData.match(/(ComputerName|UserName|FileName|FilePath|SHA256String|SHA1String|MD5String|CommandLine|DocumentsAccessed|IP):[^,]+/g);
+        // Extract specified information
+        var sortedData = `
+          ComputerName: ${jsonData.ComputerName || ''}
+          UserName: ${jsonData.UserName || ''}
+          FileName: ${jsonData.FileName || ''}
+          FilePath: ${jsonData.FilePath || ''}
+          SHA256String: ${jsonData.SHA256String || ''}
+          SHA1String: ${jsonData.SHA1String || ''}
+          MD5String: ${jsonData.MD5String || ''}
+          CommandLine: ${jsonData.CommandLine || ''}
+          DocumentsAccessed: ${jsonData.DocumentsAccessed || ''}
+          IP: ${jsonData.IP || ''}
+        `;
 
-      // Display the sorted data
-      document.getElementById('sorted-data').textContent = sortedData.join('\n');
+        // Display the sorted data
+        document.getElementById('sorted-data').textContent = sortedData;
+      } catch (error) {
+        // Handle JSON parsing error
+        document.getElementById('sorted-data').textContent = 'Error parsing JSON';
+      }
     }
   </script>
 </body>
