@@ -71,7 +71,7 @@
 
       try {
         // Remove unwanted characters
-        var cleanedJson = rawJson.replace(/["{}[\]()]/g, '');
+        var cleanedJson = rawJson.replace(/[{}[\]()]/g, '');
 
         // Parse the cleaned JSON
         var jsonData = JSON.parse('{' + cleanedJson + '}');
