@@ -50,6 +50,7 @@
       padding: 2px 5px;
       border-radius: 4px;
       white-space: pre-wrap;
+      display: block; /* Ensures the entire content is displayed on a new line */
     }
   </style>
 </head>
@@ -73,7 +74,7 @@
         var cleanedJson = rawJson.replace(/["{}[\]()]/g, '');
 
         // Parse the cleaned JSON
-        var jsonData = JSON.parse(cleanedJson);
+        var jsonData = JSON.parse('{' + cleanedJson + '}');
 
         // Extract specified information
         var parsedData = `
