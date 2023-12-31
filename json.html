@@ -62,8 +62,8 @@
 
   <button onclick="parseAndDisplay()">Parse JSON</button>
 
-  <h2>Parsed Data</h2>
-  <code id="parsed-data"></code>
+  <h2>Extracted Data</h2>
+  <code id="extracted-data"></code>
 
   <script>
     function parseAndDisplay() {
@@ -73,11 +73,22 @@
         // Parse the JSON
         var jsonData = JSON.parse(rawJson);
 
-        // Display the parsed data
-        document.getElementById('parsed-data').textContent = JSON.stringify(jsonData, null, 2);
+        // Extract specific fields
+        var extractedData = {
+          ComputerName: jsonData.ComputerName || '',
+          FileName: jsonData.FileName || '',
+          FilePath: jsonData.FilePath || '',
+          SHA256String: jsonData.SHA256String || '',
+          SHA1String: jsonData.SHA1String || '',
+          UserName: jsonData.UserName || '',
+          IP: jsonData.IP || ''
+        };
+
+        // Display the extracted data
+        document.getElementById('extracted-data').textContent = JSON.stringify(extractedData, null, 2);
       } catch (error) {
         // Handle JSON parsing error
-        document.getElementById('parsed-data').textContent = 'Error parsing JSON';
+        document.getElementById('extracted-data').textContent = 'Error parsing JSON';
       }
     }
   </script>
