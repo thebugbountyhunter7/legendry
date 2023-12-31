@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diamond Model Tool</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+      color: #004080;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #004080;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #004080;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #00264d;
+    }
+
+    #diamond-model {
+      margin-top: 20px;
+    }
+
+    h2, h3, p {
+      color: #004080;
+    }
+  </style>
+</head>
+<body>
+  <h1>Diamond Model Tool</h1>
+
+  <label for="incident-trigger-time">Incident Trigger Time:</label>
+  <input type="text" id="incident-trigger-time">
+
+  <label for="incident-timeline">Brief Summary of Incident timeline:</label>
+  <textarea id="incident-timeline" rows="4" cols="50"></textarea>
+
+  <label for="actions-taken">Short Summary of actions taken:</label>
+  <textarea id="actions-taken" rows="4" cols="50"></textarea>
+
+  <label for="remediation">Remediation performed:</label>
+  <input type="text" id="remediation">
+
+  <label for="future-avoidance">Steps taken for future avoidance:</label>
+  <textarea id="future-avoidance" rows="4" cols="50"></textarea>
+
+  <label for="adversary">Adversary (Optional):</label>
+  <input type="text" id="adversary">
+
+  <label for="capability">Capability:</label>
+  <input type="text" id="capability">
+
+  <label for="infrastructure">Infrastructure:</label>
+  <input type="text" id="infrastructure">
+
+  <label for="victim">Victim:</label>
+  <input type="text" id="victim">
+
+  <button onclick="generateDiamondModel()">Generate Diamond Model</button>
+
+  <h2>Generated Diamond Model</h2>
+  <div id="diamond-model"></div>
+
+  <script>
+    function generateDiamondModel() {
+      var incidentTriggerTime = document.getElementById('incident-trigger-time').value;
+      var incidentTimeline = document.getElementById('incident-timeline').value;
+      var actionsTaken = document.getElementById('actions-taken').value;
+      var remediation = document.getElementById('remediation').value;
+      var futureAvoidance = document.getElementById('future-avoidance').value;
+      var adversary = document.getElementById('adversary').value;
+      var capability = document.getElementById('capability').value;
+      var infrastructure = document.getElementById('infrastructure').value;
+      var victim = document.getElementById('victim').value;
+
+      var diamondModel = `
+        <h2>Diamond Model</h2>
+        <p><strong>Incident Trigger Time:</strong> ${incidentTriggerTime}</p>
+        <p><strong>Brief Summary of Incident timeline:</strong> ${incidentTimeline}</p>
+
+        <h3>Short Summary of Actions Taken:</h3>
+        <p>${actionsTaken}</p>
+
+        <h3>Remediation performed:</h3>
+        <p>${remediation}</p>
+
+        <h3>Steps taken for future avoidance:</h3>
+        <p>${futureAvoidance}</p>
+
+        <h3>Adversary (Optional):</h3>
+        <p>${adversary}</p>
+
+        <h3>Capability:</h3>
+        <p>${capability}</p>
+
+        <h3>Infrastructure:</h3>
+        <p>${infrastructure}</p>
+
+        <h3>Victim:</h3>
+        <p>${victim}</p>
+      `;
+
+      document.getElementById('diamond-model').innerHTML = diamondModel;
+    }
+  </script>
+</body>
+</html>
