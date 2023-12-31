@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Sorting Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    h2 {
+      color: #333;
+      margin-top: 20px;
+    }
+
+    code {
+      background-color: #f8f9fa;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Data Sorting Tool</h1>
+
+  <label for="raw-data">Raw Data:</label>
+  <textarea id="raw-data"></textarea>
+
+  <button onclick="sortData()">Sort Data</button>
+
+  <h2>Sorted Data</h2>
+  <code id="sorted-data"></code>
+
+  <script>
+    function sortData() {
+      var rawData = document.getElementById('raw-data').value;
+
+      // Regular expression to match and remove unwanted characters
+      var cleanData = rawData.replace(/[{()}[\]]/g, '');
+
+      // Regular expression to extract required information
+      var sortedData = cleanData.match(/ComputerName|UserName|FileName|FilePath|SHA256String|SHA1String|MD5String|CommandLine|DocumentsAccessed|IP/g);
+
+      // Display the sorted data
+      document.getElementById('sorted-data').textContent = sortedData.join('\n');
+    }
+  </script>
+</body>
+</html>
