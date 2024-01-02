@@ -1,187 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Threat Intelligence Checker</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Intelligence Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
 
-    label {
-      display: block;
-      margin-top: 10px;
-    }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
 
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      margin-top: 6px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-    }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
 
-    button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 15px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-    button:hover {
-      background-color: #45a049;
-    }
+        button:hover {
+            background-color: #45a049;
+        }
 
-    #analysis-report {
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
+        #analysis-report {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
 
-    #analysis-report p {
-      margin-bottom: 10px;
-    }
+        #analysis-report p {
+            margin-bottom: 10px;
+        }
 
-    #analysis-report ul {
-      list-style-type: none;
-      padding: 0;
-    }
+        #analysis-report ul {
+            list-style-type: none;
+            padding: 0;
+        }
 
-    #analysis-report ul li {
-      display: inline-block;
-      margin-right: 10px;
-    }
+        #analysis-report ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
 
-    #user-details {
-      display: none;
-    }
+        #user-details {
+            display: none;
+        }
 
-    #user-found-label {
-      float: right;
-    }
+        #user-found-label {
+            float: right;
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-    .fadeIn {
-      animation: fadeIn 0.5s ease-in-out;
-    }
-  </style>
+        .fadeIn {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
 </head>
 <body>
-  <h1>Threat Intelligence Checker</h1>
+    <h1>Threat Intelligence Checker</h1>
 
-  <label for="ip">Enter IP Address:</label>
-  <input type="text" id="ip">
+    <label for="ip">Enter IP Address:</label>
+    <input type="text" id="ip">
 
-  <button onclick="generateThreatIntelLinks()" class="fadeIn">Generate Threat Intelligence Links</button>
+    <button onclick="fetchIpInfo()" class="fadeIn">Get IP Info</button>
+    <button onclick="generateThreatIntelLinks()" class="fadeIn">Generate Threat Intelligence Links</button>
 
-  <div id="threat-intel-links" class="fadeIn"></div>
+    <div id="ip-info" class="fadeIn"></div>
+    <div id="threat-intel-links" class="fadeIn"></div>
 
-  <label for="traffic">Amount of Traffic in Past 60 Days:</label>
-  <input type="text" id="traffic">
+    <label for="traffic">Amount of Traffic in Past 60 Days:</label>
+    <input type="text" id="traffic">
 
-  <label for="location">Location of IP:</label>
-  <input type="text" id="location">
+    <label for="location">Location of IP:</label>
+    <input type="text" id="location">
 
-  <label for="domain">Domain of IP:</label>
-  <input type="text" id="domain">
+    <label for="domain">Domain of IP:</label>
+    <input type="text" id="domain">
 
-  <label id="user-found-label" for="user-found">User Found:</label>
-  <input type="checkbox" id="user-found" onchange="toggleUserDetails()">
+    <label id="user-found-label" for="user-found">User Found:</label>
+    <input type="checkbox" id="user-found" onchange="toggleUserDetails()">
 
-  <div id="user-details">
-    <label for="user-number">Number of Users:</label>
-    <input type="text" id="user-number">
+    <div id="user-details">
+        <label for="user-number">Number of Users:</label>
+        <input type="text" id="user-number">
 
-    <label for="user-names">User Names:</label>
-    <textarea id="user-names" rows="4" cols="50"></textarea>
-  </div>
+        <label for="user-names">User Names:</label>
+        <textarea id="user-names" rows="4" cols="50"></textarea>
+    </div>
 
-  <label for="additional-info">Additional Information:</label>
-  <textarea id="additional-info" rows="4" cols="50"></textarea>
+    <label for="additional-info">Additional Information:</label>
+    <textarea id="additional-info" rows="4" cols="50"></textarea>
 
-  <button onclick="generateReport()" class="fadeIn">Generate Report</button>
+    <button onclick="generateReport()" class="fadeIn">Generate Report</button>
 
-  <h2 class="fadeIn">Analysis Report</h2>
-  <div id="analysis-report" class="fadeIn"></div>
+    <h2 class="fadeIn">Analysis Report</h2>
+    <div id="analysis-report" class="fadeIn"></div>
 
-  <script>
-    function toggleUserDetails() {
-      var userDetailsDiv = document.getElementById('user-details');
-      var userFoundCheckbox = document.getElementById('user-found');
+    <script>
+        function toggleUserDetails() {
+            var userDetailsDiv = document.getElementById('user-details');
+            var userFoundCheckbox = document.getElementById('user-found');
 
-      if (userFoundCheckbox.checked) {
-        userDetailsDiv.style.display = 'block';
-      } else {
-        userDetailsDiv.style.display = 'none';
-      }
-    }
+            if (userFoundCheckbox.checked) {
+                userDetailsDiv.style.display = 'block';
+            } else {
+                userDetailsDiv.style.display = 'none';
+            }
+        }
 
-    function generateThreatIntelLinks() {
-      var ip = document.getElementById('ip').value;
-      var virusTotalLink = `https://www.virustotal.com/gui/ip-address/${ip}`;
-      var SOCRADAR = `https://socradar.io/labs/ioc-radar/${ip}`;
-      var GreyNoise = `https://viz.greynoise.io/ip/${ip}`;
-      var Abusedip = `https://www.abuseipdb.com/check/${ip}`;
+        function fetchIpInfo() {
+            var ip = document.getElementById('ip').value;
+            fetch(`https://ipinfo.io/${ip}/json?token=28c7c733372353`)
+                .then(response => response.json())
+                .then(data => {
+                    var ipInfoDiv = document.getElementById('ip-info');
+                    ipInfoDiv.innerHTML = `
+                        <p><strong>IP Information:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
 
-      var linksDiv = document.getElementById('threat-intel-links');
-      linksDiv.innerHTML = `
-        <p>Threat Intelligence Links:</p>
-        <ul>
-          <li>VirusTotal: <a href="${virusTotalLink}" target="_blank">${virusTotalLink}</a></li>
-          <li>SOCRADAR: <a href="${SOCRADAR}" target="_blank">${SOCRADAR}</a></li>
-          <li>GreyNoise: <a href="${GreyNoise}" target="_blank">${GreyNoise}</a></li>
-          <li>AbusedIP: <a href="${Abusedip}" target="_blank">${Abusedip}</a></li>
-        </ul>
-      `;
-    }
+                    // Automatically populate "Location of IP", "Country", "City", and "Domain of IP"
+                    document.getElementById('location').value = `${data.city || ''}, ${data.region || ''}, ${data.country || ''}`;
+                    document.getElementById('domain').value = data.org || '';
+                })
+                .catch(error => {
+                    console.error('Error fetching IP info:', error);
+                });
+        }
 
-    function generateReport() {
-      var ip = document.getElementById('ip').value;
-      var traffic = document.getElementById('traffic').value;
-      var location = document.getElementById('location').value;
-      var domain = document.getElementById('domain').value;
-      var userFound = document.getElementById('user-found').checked;
-      var userNumber = document.getElementById('user-number').value;
-      var userNames = document.getElementById('user-names').value;
-      var additionalInfo = document.getElementById('additional-info').value;
+        function generateThreatIntelLinks() {
+            var ip = document.getElementById('ip').value;
+            var virusTotalLink = `https://www.virustotal.com/gui/ip-address/${ip}`;
+            var SOCRADAR = `https://socradar.io/labs/ioc-radar/${ip}`;
+            var GreyNoise = `https://viz.greynoise.io/ip/${ip}`;
+            var Abusedip = `https://www.abuseipdb.com/check/${ip}`;
 
-      var analysisReport = `
-        <p>The location of IP ${ip} was found to be: ${location}</p>
-        <p>The domain of IP ${ip} was found to be: ${domain}</p>
-        <p>Amount of traffic from IP ${ip} in the past 60 days: ${traffic}</p>
-      `;
+            var linksDiv = document.getElementById('threat-intel-links');
+            linksDiv.innerHTML = `
+                <p><strong>Threat Intelligence Links:</strong></p>
+                <ul>
+                    <li>VirusTotal: <a href="${virusTotalLink}" target="_blank">${virusTotalLink}</a></li>
+                    <li>SOCRADAR: <a href="${SOCRADAR}" target="_blank">${SOCRADAR}</a></li>
+                    <li>GreyNoise: <a href="${GreyNoise}" target="_blank">${GreyNoise}</a></li>
+                    <li>AbusedIP: <a href="${Abusedip}" target="_blank">${Abusedip}</a></li>
+                </ul>
+            `;
+        }
 
-      if (userFound) {
-        analysisReport += `
-          <p>Users were found associated with IP ${ip}.</p>
-          <ul>
-            <li>Number of Users: ${userNumber}</li>
-            <li>User Names: ${userNames}</li>
-          </ul>
-        `;
-      } else {
-        analysisReport += '<p>No users were found associated with IP.</p>';
-      }
+        function generateReport() {
+            var ip = document.getElementById('ip').value;
+            var traffic = document.getElementById('traffic').value;
+            var location = document.getElementById('location').value;
+            var domain = document.getElementById('domain').value;
+            var userFound = document.getElementById('user-found').checked;
+            var userNumber = document.getElementById('user-number').value;
+            var userNames = document.getElementById('user-names').value;
+            var additionalInfo = document.getElementById('additional-info').value;
 
-      analysisReport += `<p>Additional Information: ${additionalInfo}</p>`;
+            var analysisReport = `
+                <p>The location of IP ${ip} was found to be: ${location}</p>
+                <p>The domain of IP ${ip} was found to be: ${domain}</p>
+                <p>Amount of traffic from IP ${ip} in the past 60 days: ${traffic}</p>
+            `;
 
-      document.getElementById('analysis-report').innerHTML = analysisReport;
-    }
-  </script>
+            if (userFound) {
+                analysisReport += `
+                    <p>Users were found associated with IP ${ip}.</p>
+                    <ul>
+                        <li>Number of Users: ${userNumber}</li>
+                        <li>User Names: ${userNames}</li>
+                    </ul>
+                `;
+            } else {
+                analysisReport += '<p>No users were found associated with IP.</p>';
+            }
+
+            analysisReport += `<p>Additional Information: ${additionalInfo}</p>`;
+
+            document.getElementById('analysis-report').innerHTML = analysisReport;
+        }
+    </script>
 </body>
 </html>
