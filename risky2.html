@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diamond Model Tool - Risky Signin / MFA Authentication Failure</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    textarea, input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+
+    textarea:hover, input:hover {
+      border-color: #007bff;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #diamond-model {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      position: relative;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    h2, p, strong {
+      color: #333;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    a {
+      color: #007bff;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Diamond Model Tool - Risky Signin / MFA Authentication Failure</h1>
+
+  <!-- New section for pasting threat details -->
+  <label for="pasteDetails">Paste Threat Details:</label>
+  <textarea id="pasteDetails" rows="4" cols="50"></textarea>
+
+  <label for="summary">Summary:</label>
+  <textarea id="summary" rows="4" cols="50"></textarea>
+
+  <label for="email">User Email:</label>
+  <input type="text" id="email">
+
+  <label for="ip">IP:</label>
+  <input type="text" id="ip">
+
+  <label for="victim-reason">Reason provided by victim:</label>
+  <textarea id="victim-reason" rows="4" cols="50"></textarea>
+
+  <button onclick="generateDiamondModel()">Generate Diamond Model</button>
+
+  <h2>Generated Diamond Model</h2>
+  <div id="diamond-model"></div>
+
+  <script>
+    function generateDiamondModel() {
+      // Extract threat details from pasted text
+      var pasteDetails = document.getElementById('pasteDetails').value;
+      var threatDetails = parseThreatDetails(pasteDetails);
+
+      // Set values in input fields
+      document.getElementById('summary').value = threatDetails.alertName || '';
+      document.getElementById('email').value = threatDetails.user || '';
+      document.getElementById('ip').value = threatDetails.ip || '';
+      document.getElementById('victim-reason').value = threatDetails.alertSource || '';
+
+      // Rest of the code (unchanged)
+      var virusTotalLink = `https://www.virustotal.com/gui/ip-address/${threatDetails.ip}`;
+      var SOCRADAR = `https://socradar.io/labs/ioc-radar/${threatDetails.ip}`;
+      var GreyNoise = `https://viz.greynoise.io/ip/${threatDetails.ip}`;
+      var Abusedip = `https://www.abuseipdb.com/check/${threatDetails.ip}`;
+
+      var diamondModel = `
+        <h2>Risky Signin / MFA Authentication Failure</h2>
+        <p><strong>Summary:</strong> ${threatDetails.alertName}</p>
+        <p><strong>Email:</strong> ${threatDetails.user}</p>
+        <p><strong>IP:</strong> ${threatDetails.ip}</p>
+        <p><strong>Brief Summary of Actions Taken:</strong></p>
+        <ul>
+          <li>Checked the reputation of IP on VirusTotal: <a href="${virusTotalLink}" target="_blank">VirusTotal</a></li>
+          <li>Checked the reputation of IP on SOCRADAR: <a href="${SOCRADAR}" target="_blank">SOCRADAR</a></li>
+          <li>Checked the reputation of IP on GreyNoise: <a href="${GreyNoise}" target="_blank">GreyNoise</a></li>
+          <li>Checked the reputation of IP on Abusedip: <a href="${Abusedip}" target="_blank">Abusedip</a></li>
+          <li>Reviewed the logs for confirmation</li>
+          <li>Reached out to the user (${threatDetails.user}) for confirmation</li>
+          <li>The user is aware of the activity and explained (${threatDetails.alertSource})</li>
+          <li>Name of the user is: (user given name)</li>
+        </ul>
+        <p><strong>Mitigation Steps Taken:</strong> MS identity protection policies are already in place and have been applied rightly</p>
+        <p><strong>Remediation Performed:</strong> We suggested the user rotate the password as a precaution</p>
+        <p><strong>Steps Taken for Future Avoidance:</strong> Not applicable</p>
+        <p><strong>Adversary (optional):</strong> No advisory involved as the sign-in was attempted by the user</p>
+        <p><strong>Capability:</strong> Access to user teams web application was successful.</p>
+        <p><strong>Infrastructure:</strong> (${threatDetails.ip})</p>
+        <p><strong>Victim:</strong> (${threatDetails.user})</p>
+      `;
+
+      document.getElementById('diamond-model').innerHTML = diamondModel;
+    }
+
+    function parseThreatDetails(details) {
+      var threatDetails = {};
+      // Implement your parsing logic here
+
+      // Example parsing logic assuming a simple format:
+      // "Alert Name: [Summary]\nUser: [Email]\nIP address: [IP]\nAlert Source: [Victim]"
+
+      var regex = /Alert Name: (.+)\nUser: (.+)\nIP address: (.+)\nAlert Source: (.+)/;
+      var match = details.match(regex);
+
+      if (match) {
+        threatDetails.alertName = match[1];
+        threatDetails.user = match[2];
+        threatDetails.ip = match[3];
+        threatDetails.alertSource = match[4];
+      }
+
+      return threatDetails;
+    }
+  </script>
+</body>
+</html>
