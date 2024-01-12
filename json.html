@@ -1,106 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple JSON Parser Tool</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    textarea {
-      width: 100%;
-      height: 200px;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      box-sizing: border-box;
-    }
-
-    button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    h2 {
-      color: #333;
-      margin-top: 20px;
-    }
-
-    code {
-      background-color: #f8f9fa;
-      padding: 2px 5px;
-      border-radius: 4px;
-      white-space: pre-wrap;
-      display: block; /* Ensures the entire content is displayed on a new line */
-    }
-  </style>
-</head>
-<body>
-  <h1>Simple JSON Parser Tool</h1>
-
-  <label for="raw-json">Raw JSON:</label>
-  <textarea id="raw-json"></textarea>
-
-  <button onclick="parseAndDisplay()">Parse JSON</button>
-
-  <h2>Extracted Data</h2>
-  <code id="extracted-data"></code>
-
-  <script>
-    function parseAndDisplay() {
-      var rawJson = document.getElementById('raw-json').value;
-
-      try {
-        // Parse the JSON
-        var jsonData = JSON.parse(rawJson);
-
-        // Filter out non-string values
-        function filterStrings(obj) {
-          return Object.keys(obj)
-            .filter(key => typeof obj[key] === 'string')
-            .reduce((acc, key) => {
-              acc[key] = obj[key];
-              return acc;
-            }, {});
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
         }
 
-        // Extract specific fields
-        var extractedData = filterStrings({
-          ComputerName: jsonData.ComputerName,
-          FileName: jsonData.FileName,
-          FilePath: jsonData.FilePath,
-          SHA256String: jsonData.SHA256String,
-          SHA1String: jsonData.SHA1String,
-          UserName: jsonData.UserName,
-          IP: jsonData.IP
-        });
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-        // Display the extracted data
-        document.getElementById('extracted-data').textContent = JSON.stringify(extractedData, null, 2);
-      } catch (error) {
-        // Handle JSON parsing error
-        document.getElementById('extracted-data').textContent = 'Error parsing JSON';
-      }
-    }
-  </script>
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #parsedResult {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+    <title>JSON Parser Tool</title>
+</head>
+<body>
+    <div class="container">
+        <h1>JSON Parser Tool</h1>
+        <label for="jsonInput">Enter JSON:</label>
+        <textarea id="jsonInput" placeholder="Enter valid JSON here..." rows="8"></textarea>
+        <button onclick="parseJSON()">Parse JSON</button>
+        <div id="parsedResult"></div>
+    </div>
+
+    <script>
+        function parseJSON() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            const parsedResult = document.getElementById('parsedResult');
+
+            try {
+                const parsedObject = JSON.parse(jsonInput);
+                const formattedJSON = JSON.stringify(parsedObject, null, 2);
+                parsedResult.innerHTML = `<pre>${formattedJSON}</pre>`;
+            } catch (error) {
+                parsedResult.innerHTML = `<p style="color: red;">Error parsing JSON: ${error.message}</p>`;
+            }
+        }
+    </script>
 </body>
 </html>
