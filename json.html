@@ -9,45 +9,50 @@
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
 
         .container {
-            max-width: 600px;
-            margin: 50px auto;
+            width: 80%;
             background-color: #fff;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
 
         h1 {
-            text-align: center;
             color: #333;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin: 15px 0 5px;
+            font-weight: bold;
         }
 
         textarea {
             width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 5px;
+            resize: vertical;
         }
 
         button {
-            display: block;
-            margin: 10px auto;
+            display: inline-block;
             padding: 10px 20px;
             background-color: #4caf50;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         button:hover {
@@ -56,12 +61,22 @@
 
         #parsedResult {
             margin-top: 20px;
-            padding: 10px;
+            padding: 15px;
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
             border-radius: 5px;
             white-space: pre-wrap;
+            font-size: 14px;
+        }
+
+        #resultMessage {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
         }
     </style>
     <title>JSON Parser Tool</title>
@@ -73,19 +88,23 @@
         <textarea id="jsonInput" placeholder="Enter valid JSON here..." rows="8"></textarea>
         <button onclick="parseJSON()">Parse JSON</button>
         <div id="parsedResult"></div>
+        <div id="resultMessage"></div>
     </div>
 
     <script>
         function parseJSON() {
             const jsonInput = document.getElementById('jsonInput').value;
             const parsedResult = document.getElementById('parsedResult');
+            const resultMessage = document.getElementById('resultMessage');
 
             try {
                 const parsedObject = JSON.parse(jsonInput);
                 const formattedJSON = JSON.stringify(parsedObject, null, 2);
                 parsedResult.innerHTML = `<pre>${formattedJSON}</pre>`;
+                resultMessage.innerHTML = '<span style="color: green;">JSON parsed successfully!</span>';
             } catch (error) {
-                parsedResult.innerHTML = `<p style="color: red;">Error parsing JSON: ${error.message}</p>`;
+                parsedResult.innerHTML = '';
+                resultMessage.innerHTML = `<span class="error">Error parsing JSON: ${error.message}</span>`;
             }
         }
     </script>
