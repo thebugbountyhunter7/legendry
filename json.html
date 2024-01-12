@@ -10,20 +10,45 @@
             padding: 0;
             background-color: #f0f0f0;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden; /* Disable body scrolling */
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
         }
 
         .container {
-            width: 80%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: stretch;
+            overflow: hidden;
+        }
+
+        .input-box {
+            width: 30%;
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            overflow-y: auto; /* Enable vertical scrolling within the container */
+            margin: 20px;
+        }
+
+        .result-box {
+            width: 60%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+            overflow-y: auto;
         }
 
         h1 {
@@ -37,9 +62,8 @@
         }
 
         textarea {
-            width: 100%;
+            width: calc(100% - 20px);
             padding: 10px;
-            margin-bottom: 15px;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -47,8 +71,8 @@
         }
 
         button {
-            display: inline-block;
-            padding: 10px 20px;
+            width: 100%;
+            padding: 10px;
             background-color: #4caf50;
             color: #fff;
             border: none;
@@ -63,27 +87,19 @@
 
         #parsedResult {
             margin-top: 20px;
-            padding: 15px;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            white-space: nowrap; /* Prevent line breaks */
-            overflow-x: auto; /* Enable horizontal scrolling */
+            white-space: nowrap;
             font-size: 14px;
         }
 
-        /* Add the following rule to style the scrollbar */
+        /* Add scrollbar styles */
         #parsedResult::-webkit-scrollbar {
             width: 10px;
         }
 
-        /* Add the following rule to style the scrollbar track */
         #parsedResult::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
 
-        /* Add the following rule to style the scrollbar handle */
         #parsedResult::-webkit-scrollbar-thumb {
             background: #888;
             border-radius: 5px;
@@ -101,13 +117,23 @@
     <title>JSON Parser Tool</title>
 </head>
 <body>
+    <div class="header">
+        JSON Parser Tool
+    </div>
+
     <div class="container">
-        <h1>JSON Parser Tool</h1>
-        <label for="jsonInput">Enter JSON:</label>
-        <textarea id="jsonInput" placeholder="Enter valid JSON here..." rows="8"></textarea>
-        <button onclick="parseJSON()">Parse JSON</button>
-        <div id="parsedResult"></div>
-        <div id="resultMessage"></div>
+        <div class="input-box">
+            <h1>Input JSON:</h1>
+            <label for="jsonInput">Enter JSON:</label>
+            <textarea id="jsonInput" placeholder="Enter valid JSON here..." rows="8"></textarea>
+            <button onclick="parseJSON()">Parse JSON</button>
+        </div>
+
+        <div class="result-box">
+            <h1>Result:</h1>
+            <div id="parsedResult"></div>
+            <div id="resultMessage"></div>
+        </div>
     </div>
 
     <script>
